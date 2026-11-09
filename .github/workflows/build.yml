@@ -1,0 +1,50 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install buildozer cython git+https://github.com
+
+    - name: Install Android SDK/NDK dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libsqlite3-dev sqlite3 bzip2 libbz2-dev zlib1g-dev libssl-dev openssl libgdbm-dev libgdbm-compat-dev liblzma-dev libreadline-dev libncursesw5-dev libffi-dev uuid-dev listcc-dev
+        sudo apt-get install -y automake autoconf libtool pkg-config json-c-dev libncurses5-dev libncursesw5-dev cmake
+
+    - name: Create buildozer.spec
+      run: |
+        buildozer init
+        # Modification automatique du fichier spec pour inclure nos besoins
+        sed -i 's/^title = .*/title = IA Ahmad/' buildozer.spec
+        sed -i 's/^package.name = .*/package.name = iaahmad/' buildozer.spec
+        sed -i 's/^package.domain = .*/package.domain = org.ahmad/' buildozer.spec
+        sed -i 's/^requirements = .*/requirements = python3,kivy,huggingface_hub,requests,certifi,charset-normalizer,idna,urllib3/' buildozer.spec
+        sed -i 's/# android.permissions = .*/android.permissions = INTERNET/' buildozer.spec
+        sed -i 's/# android.accept_sdk_license = False/android.accept_sdk_license = True/' buildozer.spec
+
+    - name: Build Android APK
+      run: |
+        yes | buildozer android debug
+        
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Mon-IA-Ahmad
+        path: bin/*.apk
