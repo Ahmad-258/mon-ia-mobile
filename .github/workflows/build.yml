@@ -33,7 +33,7 @@ jobs:
         sed -i 's/^title = .*/title = IA Ahmad/' buildozer.spec
         sed -i 's/^package.name = .*/package.name = iaahmad/' buildozer.spec
         sed -i 's/^package.domain = .*/package.domain = org.ahmad/' buildozer.spec
-        sed -i 's/^requirements = .*/requirements = python3,kivy,huggingface_hub,requests,certifi,charset-normalizer,idna,urllib3/' buildozer.spec
+        sed -i 's/^requirements = .*/requirements = python3,kivy,requests,certifi,charset-normalizer,idna,urllib3,openssl/' buildozer.spec
         sed -i 's/# android.permissions = .*/android.permissions = INTERNET/' buildozer.spec
         sed -i 's/# android.accept_sdk_license = False/android.accept_sdk_license = True/' buildozer.spec
 
