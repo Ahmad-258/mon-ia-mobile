@@ -16,7 +16,8 @@ orientation = portrait
 fullscreen = 0
 
 android.permissions = INTERNET
-android.api = 35
+android.api = 33
+android.ndk = 25b
 android.minapi = 23
 android.archs = arm64-v8a
 android.accept_sdk_license = True
@@ -25,7 +26,8 @@ android.allow_backup = False
 p4a.bootstrap = sdl2
 # Pin python-for-android to a revision using Python 3.11.5.
 # Python 3.14 currently fails to compile its remote-debugging module for Android NDK.
-p4a.commit = 2ebea90d9d7e965ef0754466abd185a41ab298aa
+# Use the Cython-based pyjnius recipe to avoid the failing PEP 517 host-python build.
+p4a.commit = 83e74cac0fa230231f63b7d7e4f1e8581fd9e2ce
 
 [buildozer]
 
